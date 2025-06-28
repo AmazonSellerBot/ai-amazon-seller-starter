@@ -8,7 +8,10 @@ def root():
     return {"message": "AI Amazon Seller Bot is running."}
 
 @app.get("/marketplaces")
-def read_marketplaces():
-    token = get_access_token()
-    marketplaces = get_marketplace_participations(token)
-    return marketplaces
+def marketplaces():
+    try:
+        token = get_access_token()
+        result = get_marketplace_participations(token)
+        return result
+    except Exception as e:
+        return {"error": str(e)}
