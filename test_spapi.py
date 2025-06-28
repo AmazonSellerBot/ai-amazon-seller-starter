@@ -5,8 +5,6 @@ import json
 import boto3
 from botocore.auth import SigV4Auth
 from botocore.awsrequest import AWSRequest
-from botocore.httpsession import URLLib3Session
-
 
 def get_access_token():
     url = "https://api.amazon.com/auth/o2/token"
@@ -25,20 +23,24 @@ def get_marketplace_participations(access_token):
     host = "sellingpartnerapi-na.amazon.com" if region == "na" else "sellingpartnerapi-eu.amazon.com"
     endpoint = f"https://{host}/sellers/v1/marketplaceParticipations"
 
-    aws_request = AWSRequest(
+    # Build the request
+    request = AWSRequest(
         method="GET",
         url=endpoint,
         headers={
-            "x-amz-access-token": access_token,
-            "host": host
+            "host": host,
+            "x-amz-access-token": access_token
         }
     )
 
+    # Sign the request
     credentials = boto3.Session().get_credentials()
-    SigV4Auth(credentials, "execute-api", "us-east-1").add_auth(aws_request)
+    SigV4Auth(credentials, "execute-api", "us-east-1").add_auth(request)
 
-    session = URLLib3Session()
-    response = session.send(aws_request)
+    # Send signed request using requests
+    prepared_request = request.prepare()
+    session = requests.Session()
+    response = session.send(prepared_request)
     response.raise_for_status()
     return response.json()
 
