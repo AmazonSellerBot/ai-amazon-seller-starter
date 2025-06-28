@@ -5,6 +5,8 @@ import json
 import boto3
 from botocore.auth import SigV4Auth
 from botocore.awsrequest import AWSRequest
+from botocore.httpsession import URLLib3Session
+
 
 def get_access_token():
     url = "https://api.amazon.com/auth/o2/token"
