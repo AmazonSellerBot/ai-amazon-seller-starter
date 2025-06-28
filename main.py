@@ -1,18 +1,6 @@
-from test_spapi import get_access_token, get_marketplace_participations
+# main.py
+import uvicorn
+from app import app
 
-print("[🧪] Running SP-API test...")
-
-try:
-    token = get_access_token()
-    print("[✅] Access token received!")
-
-    result = get_marketplace_participations(token)
-    print("[✅] Success! Marketplaces:")
-    print(result)
-
-except Exception as e:
-    print("[❌] Error during SP-API call:")
-    print(e)
-
-# Dummy line to force Railway rebuild
-print("Triggering fresh Railway build...")
+if __name__ == "__main__":
+    uvicorn.run("app:app", host="0.0.0.0", port=8000)
