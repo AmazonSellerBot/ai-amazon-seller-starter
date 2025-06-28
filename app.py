@@ -5,13 +5,9 @@ app = FastAPI()
 
 @app.get("/")
 def root():
-    return {"message": "AI Amazon Seller Bot is running."}
+    return {"message": "AI Amazon Seller Bot is running"}
 
 @app.get("/marketplaces")
 def marketplaces():
-    try:
-        token = get_access_token()
-        result = get_marketplace_participations(token)
-        return result
-    except Exception as e:
-        return {"error": str(e)}
+    access_token = get_access_token()
+    return get_marketplace_participations(access_token)
