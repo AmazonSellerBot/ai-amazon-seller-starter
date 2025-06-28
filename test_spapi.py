@@ -35,7 +35,7 @@ def get_marketplace_participations(access_token):
     credentials = boto3.Session().get_credentials()
     SigV4Auth(credentials, "execute-api", "us-east-1").add_auth(aws_request)
 
-    session = requests.Session()
+    session = URLLib3Session()
     response = session.send(aws_request)
     response.raise_for_status()
     return response.json()
