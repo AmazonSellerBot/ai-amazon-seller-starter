@@ -7,4 +7,4 @@ print("[✅] Access token received!")
 
 result = get_marketplace_participations(token)
 print("[✅] Success! Marketplaces:")
-print(result)
+print(result) 
