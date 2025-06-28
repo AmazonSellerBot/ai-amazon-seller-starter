@@ -1,10 +1,10 @@
 import os
-import requests
-import time
 import json
 import boto3
 from botocore.auth import SigV4Auth
 from botocore.awsrequest import AWSRequest
+import requests
+
 
 def get_access_token():
     url = "https://api.amazon.com/auth/o2/token"
@@ -18,13 +18,14 @@ def get_access_token():
     response.raise_for_status()
     return response.json()["access_token"]
 
+
 def get_marketplace_participations(access_token):
-    region = os.environ["SPAPI_REGION"]
+    region = os.environ.get("SPAPI_REGION", "na")
     host = "sellingpartnerapi-na.amazon.com" if region == "na" else "sellingpartnerapi-eu.amazon.com"
     endpoint = f"https://{host}/sellers/v1/marketplaceParticipations"
 
-    # Build the request
-    request = AWSRequest(
+    # Create AWSRequest for SigV4Auth
+    aws_request = AWSRequest(
         method="GET",
         url=endpoint,
         headers={
@@ -33,16 +34,17 @@ def get_marketplace_participations(access_token):
         }
     )
 
-    # Sign the request
     credentials = boto3.Session().get_credentials()
-    SigV4Auth(credentials, "execute-api", "us-east-1").add_auth(request)
+    SigV4Auth(credentials, "execute-api", "us-east-1").add_auth(aws_request)
 
-    # Send signed request using requests
-    prepared_request = request.prepare()
+    # Prepare and send signed request using requests
+    prepared_request = aws_request.prepare()
     session = requests.Session()
     response = session.send(prepared_request)
     response.raise_for_status()
+
     return response.json()
+
 
 if __name__ == "__main__":
     print("[🔁] Requesting Access Token...")
