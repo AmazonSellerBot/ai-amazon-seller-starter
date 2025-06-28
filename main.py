@@ -1,11 +1,10 @@
-from flask import Flask
+from test_spapi import get_access_token, get_marketplace_participations
 
-app = Flask(__name__)
+print("[🧪] Running SP-API test...")
 
-@app.route("/")
-def home():
-    return "Amazon Seller Bot is live!"
+token = get_access_token()
+print("[✅] Access token received!")
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=3000)
-
+result = get_marketplace_participations(token)
+print("[✅] Success! Marketplaces:")
+print(result)
