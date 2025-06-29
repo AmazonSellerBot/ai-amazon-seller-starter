@@ -1,13 +1,27 @@
 from fastapi import FastAPI
-from test_spapi import get_access_token, get_marketplace_participations
+from pydantic import BaseModel
+import os
+import boto3
 
 app = FastAPI()
 
 @app.get("/")
 def root():
-    return {"message": "AI Amazon Seller Bot is running"}
+    return {"status": "AI Amazon Seller Bot is running!"}
 
-@app.get("/marketplaces")
-def marketplaces():
-    access_token = get_access_token()
-    return get_marketplace_participations(access_token)
+# Example test route to check environment variables
+@app.get("/env")
+def get_env():
+    return {
+        "SELLER_ID": os.getenv("SPAPI_SELLER_ID"),
+        "ROLE_ARN": os.getenv("SPAPI_ROLE_ARN")
+    }
+
+# Example POST route for future integration
+class ListingRequest(BaseModel):
+    asin: str
+
+@app.post("/optimize-listing")
+def optimize_listing(req: ListingRequest):
+    # Placeholder for actual optimization logic
+    return {"message": f"Optimization started for ASIN {req.asin}"}
