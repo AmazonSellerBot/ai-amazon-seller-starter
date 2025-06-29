@@ -1,9 +1,8 @@
-from sp_api.api import Listings
+from sp_api.api.listings.listings import Listings
 from sp_api.base import Marketplaces, SellingApiException
 
 def update_listing(asin, updates):
     try:
-        # Set up SP-API Listings object
         listings = Listings(marketplace=Marketplaces.US)
 
         patch_data = {}
@@ -13,26 +12,25 @@ def update_listing(asin, updates):
             patch_data.setdefault("patches", []).append({
                 "op": "replace",
                 "path": "/attributes/title",
-                "value": [ { "value": updates["title"], "language_tag": "en_US" } ]
+                "value": [{ "value": updates["title"], "language_tag": "en_US" }]
             })
 
         if "bullet_points" in updates:
             patch_data.setdefault("patches", []).append({
                 "op": "replace",
                 "path": "/attributes/bullet_point",
-                "value": [ { "value": b, "language_tag": "en_US" } for b in updates["bullet_points"] ]
+                "value": [{ "value": b, "language_tag": "en_US" } for b in updates["bullet_points"]]
             })
 
         if "search_terms" in updates:
             patch_data.setdefault("patches", []).append({
                 "op": "replace",
                 "path": "/attributes/generic_keyword",
-                "value": [ { "value": updates["search_terms"], "language_tag": "en_US" } ]
+                "value": [{ "value": updates["search_terms"], "language_tag": "en_US" }]
             })
 
-        # Send patch request
         response = listings.patch_listing_item(
-            sellerId=None,  # use default from env
+            sellerId=None,  # Defaults from ENV
             sku=asin,
             body=patch_data
         )
