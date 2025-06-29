@@ -2,4 +2,4 @@ fastapi
 uvicorn[standard]
 python-dotenv
 boto3
-git+https://github.com/saleweaver/python-amazon-sp-api.git@master
+git+https://github.com/abraham-ai/selling-partner-api.git@master
