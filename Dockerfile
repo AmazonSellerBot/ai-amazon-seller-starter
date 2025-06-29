@@ -1,9 +1,11 @@
-# Use stable Python 3.10 instead of 3.12
 FROM python:3.10-slim
 
 WORKDIR /app
 
 COPY . .
+
+# Install git (required for installing from GitHub)
+RUN apt-get update && apt-get install -y git
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
