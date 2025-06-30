@@ -1,28 +1,34 @@
-from sp_api.api import ListingsItemsV20210801
-from sp_api.base import Marketplaces
-from sp_api.base.exceptions import SellingApiException
+import os
+from sp_api.base import Marketplaces, SellingApiCredentials
+from sp_api.api.listings.v2021_08_01 import Listings
 
-class AmazonSPAPIClient:
-    def __init__(self):
-        self.marketplace = Marketplaces.US
+# Your hardcoded Seller ID
+SELLER_ID = "A2RY9NFQSHF0DY"
 
-    def update_listing(self, seller_sku: str, asin: str, updated_bullet: str):
-        try:
-            response = ListingsItemsV20210801().patch_listing_item(
-                seller_id='YOUR_SELLER_ID',
-                sku=seller_sku,
-                marketplace_ids=[self.marketplace.marketplace_id],
-                body={
-                    "productType": "PRODUCT",
-                    "patches": [
-                        {
-                            "op": "replace",
-                            "path": "/productDescription/bulletPoint5",
-                            "value": updated_bullet
-                        }
-                    ]
+# Set up credentials using environment variables
+credentials = SellingApiCredentials(
+    refresh_token=os.getenv("SPAPI_REFRESH_TOKEN"),
+    lwa_app_id=os.getenv("SPAPI_LWA_APP_ID"),
+    lwa_client_secret=os.getenv("SPAPI_LWA_CLIENT_SECRET"),
+    aws_secret_access_key=os.getenv("SPAPI_AWS_SECRET_ACCESS_KEY"),
+    aws_access_key=os.getenv("SPAPI_AWS_ACCESS_KEY_ID"),
+    role_arn=os.getenv("SPAPI_ROLE_ARN"),
+)
+
+def update_listing_title(asin: str, new_title: str):
+    listings_api = Listings(credentials=credentials, marketplace=Marketplaces.US)
+    response = listings_api.patch_listing_item(
+        sellerId=SELLER_ID,
+        sku=asin,
+        body={
+            "productType": "PRODUCT",
+            "patches": [
+                {
+                    "op": "replace",
+                    "path": "/attributes/title",
+                    "value": [ { "value": new_title } ],
                 }
-            )
-            return response.payload
-        except SellingApiException as e:
-            return {"error": str(e)}
+            ]
+        }
+    )
+    return response.payload
