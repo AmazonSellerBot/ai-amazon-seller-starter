@@ -1,37 +1,25 @@
-from sp_api.base import Marketplaces, SellingApiClient
-from sp_api.api.listings import Listings
+# amazon_sp_api_client.py
 import os
+from sp_api.base import Marketplaces, SellingApiCredentials
+from sp_api.api.listings.items import ListingsItems
 
 class AmazonSPAPIClient:
     def __init__(self):
-        self.client = SellingApiClient(
-            credentials=dict(
-                refresh_token=os.getenv("SPAPI_REFRESH_TOKEN"),
-                lwa_app_id=os.getenv("SPAPI_CLIENT_ID"),
-                lwa_client_secret=os.getenv("SPAPI_CLIENT_SECRET"),
-                aws_secret_access_key=os.getenv("SPAPI_AWS_SECRET_ACCESS_KEY"),
-                aws_access_key=os.getenv("SPAPI_AWS_ACCESS_KEY_ID"),
-                role_arn=os.getenv("SPAPI_ROLE_ARN"),
-            ),
-            marketplace=Marketplaces.US,
+        self.credentials = SellingApiCredentials(
+            refresh_token=os.getenv("SPAPI_REFRESH_TOKEN"),
+            lwa_app_id=os.getenv("SPAPI_CLIENT_ID"),
+            lwa_client_secret=os.getenv("SPAPI_CLIENT_SECRET"),
+            aws_secret_key=os.getenv("SPAPI_AWS_SECRET_ACCESS_KEY"),
+            aws_access_key=os.getenv("SPAPI_AWS_ACCESS_KEY_ID"),
+            role_arn=os.getenv("SPAPI_ROLE_ARN"),
         )
+        self.marketplace = Marketplaces.US
+        self.seller_id = os.getenv("SPAPI_SELLER_ID")
 
-    def patch_listing(self, asin: str, new_bullet: str, bullet_index: int):
-        listing_api = Listings(credentials=self.client.credentials)
-        attributes = {f'bullet_point{bullet_index+1}': new_bullet}
-        response = listing_api.patch_listing_item(
-            sellerId=os.getenv("AMAZON_SELLER_ID"),
+    def get_listing(self, asin):
+        listings = ListingsItems(credentials=self.credentials)
+        return listings.get_listing_item(
+            sellerId=self.seller_id,
             asin=asin,
-            body={
-                "productType": "PRODUCT",
-                "patches": [
-                    {
-                        "op": "replace",
-                        "path": f"/attributes/bullet_point{bullet_index+1}",
-                        "value": [new_bullet]
-                    }
-                ]
-            },
-            marketplaceIds=["ATVPDKIKX0DER"]
-        )
-        return response.payload
+            marketplaceIds=[self.marketplace.marketplace_id]
+        ).payload
