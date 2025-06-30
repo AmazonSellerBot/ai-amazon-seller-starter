@@ -19,7 +19,10 @@ class AmazonSPAPIClient:
 
     def get_listing_item(self, asin: str):
         try:
-            result = Listings(credentials=self.credentials, marketplace=self.marketplace).get_listing_item(
+            result = Listings(
+                credentials=self.credentials,
+                marketplace=self.marketplace
+            ).get_listing_item(
                 sellerId=self.seller_id,
                 sku=asin,
                 marketplaceIds=[self.marketplace.marketplace_id]
@@ -31,4 +34,15 @@ class AmazonSPAPIClient:
 
     def patch_listing_item(self, asin: str, update_data: dict):
         try:
-            result = Listings(credentials=self.credentials, marketplac
+            result = Listings(
+                credentials=self.credentials,
+                marketplace=self.marketplace
+            ).patch_listing_item(
+                sellerId=self.seller_id,
+                sku=asin,
+                body=update_data
+            )
+            return result.payload
+        except SellingApiException as e:
+            print("Error updating listing:", e)
+            return None
