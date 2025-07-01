@@ -1,7 +1,7 @@
 import os
 from sp_api.api.listings import Listings 
 from sp_api.base import Marketplaces, SellingApiException
-from sp_api.base.credentials import Credentials
+from sp_api.base.credentials import Credentials 
 
 
 class AmazonSPAPIClient:
