@@ -3,7 +3,6 @@ from sp_api.api import Listings
 from sp_api.base import Marketplaces, SellingApiException
 from sp_api.base.credentials import Credentials
 
-
 class AmazonSPAPIClient:
     def __init__(self):
         self.credentials = Credentials(
