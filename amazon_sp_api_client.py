@@ -1,5 +1,5 @@
 import os
-from sp_api.api import listings
+from sp_api.api import Listings
 from sp_api.base import Marketplaces, SellingApiException
 from sp_api.base.credentials import Credentials
 
@@ -19,12 +19,8 @@ class AmazonSPAPIClient:
 
     def get_listing_item(self, asin: str):
         try:
-            result = listings.get_listing_item(
-                seller_id=self.seller_id,
-                sku=asin,
-                credentials=self.credentials,
-                marketplace_id=self.marketplace.marketplace_id
-            )
+            listings_api = Listings(credentials=self.credentials, marketplace=self.marketplace)
+            result = listings_api.get_listing_item(seller_id=self.seller_id, sku=asin)
             return result.payload
         except SellingApiException as e:
             print("Error fetching listing item:", e)
@@ -32,13 +28,8 @@ class AmazonSPAPIClient:
 
     def patch_listing_item(self, asin: str, update_data: dict):
         try:
-            result = listings.patch_listing_item(
-                seller_id=self.seller_id,
-                sku=asin,
-                body=update_data,
-                credentials=self.credentials,
-                marketplace_id=self.marketplace.marketplace_id
-            )
+            listings_api = Listings(credentials=self.credentials, marketplace=self.marketplace)
+            result = listings_api.patch_listing_item(seller_id=self.seller_id, sku=asin, body=update_data)
             return result.payload
         except SellingApiException as e:
             print("Error updating listing:", e)
