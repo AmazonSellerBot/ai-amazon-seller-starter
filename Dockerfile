@@ -1,25 +1,20 @@
-# Use official Python image
+# Use an official Python image
 FROM python:3.10-slim
 
-# Set working directory
+# Install git for cloning SP-API package
+RUN apt-get update && apt-get install -y git && apt-get clean
+
+# Set work directory
 WORKDIR /app
 
-# Install system dependencies including git
-RUN apt-get update && apt-get install -y \
-    git \
-    gcc \
-    && apt-get clean
-
-# Copy requirements and install Python dependencies
+# Copy requirements first for caching
 COPY requirements.txt .
-RUN pip install --upgrade pip
+
+# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the application code
+# Copy the rest of the app
 COPY . .
 
-# Expose FastAPI default port
-EXPOSE 8000
-
-# Start the FastAPI app
+# Run the FastAPI app with Uvicorn
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
