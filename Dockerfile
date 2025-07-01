@@ -1,25 +1,27 @@
-# Use official Python image
+# Use an official Python base image
 FROM python:3.10-slim
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-  git \
-  && rm -rf /var/lib/apt/lists/*
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
-# Set working directory
+# Install system dependencies
+RUN apt-get update && \
+    apt-get install -y git && \
+    apt-get clean
+
+# Set work directory
 WORKDIR /app
 
-# Copy requirements
-COPY requirements.txt .
-
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy app code
+# Copy project files
 COPY . .
 
-# Expose the default port
+# Install Python dependencies
+RUN pip install --upgrade pip
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Expose the port FastAPI will run on
 EXPOSE 8000
 
-# Start the app
+# Start the FastAPI app using Uvicorn
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
