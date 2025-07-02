@@ -1,18 +1,18 @@
+# Use official Python base image
 FROM python:3.10-slim
 
 # Set environment variables
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-
-# Install OS dependencies
-RUN apt-get update && \
-    apt-get install -y git && \
-    apt-get clean
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
 # Set work directory
 WORKDIR /app
 
-# Copy project
+# Install dependencies
+RUN apt-get update && \
+    apt-get install -y git && \
+    apt-get clean
+
 COPY . .
 
 # Install Python dependencies
