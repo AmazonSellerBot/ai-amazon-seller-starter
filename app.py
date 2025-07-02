@@ -1,18 +1,13 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
 from amazon_sp_api_client import AmazonSPAPIClient
 
 app = FastAPI()
 sp_api_client = AmazonSPAPIClient()
 
-class ASINRequest(BaseModel):
-    asin: str
-
 @app.get("/")
 def root():
-    return {"message": "Amazon Seller Bot is live!"}
+    return {"status": "Amazon Seller Bot is up and running!"}
 
-@app.post("/get-listing")
-def get_listing(request: ASINRequest):
-    result = sp_api_client.get_listing(request.asin)
-    return {"result": result}
+@app.get("/listings/{seller_id}")
+def get_listings(seller_id: str):
+    return sp_api_client.get_listings_items(seller_id)
