@@ -1,6 +1,4 @@
 fastapi==0.111.0
 uvicorn==0.29.0
-python-dotenv
-pydantic==2.7.1
-httpx
+python-dotenv==1.0.1
 git+https://github.com/saleweaver/python-amazon-sp-api.git
