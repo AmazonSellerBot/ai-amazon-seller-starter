@@ -7,4 +7,4 @@ boto3
 cryptography
 pydantic
 pytz
-python-amazon-sp-api @ git+https://github.com/saleweaver/python-amazon-sp-api.git
+git+https://github.com/saleweaver/python-amazon-sp-api.git
