@@ -1,4 +1,7 @@
-fastapi==0.111.0
-uvicorn==0.29.0
-python-dotenv==1.0.1
-git+https://github.com/saleweaver/python-amazon-sp-api.git
+fastapi==0.100.0
+uvicorn[standard]==0.22.0
+python-dotenv==1.0.0
+httpx==0.24.1
+boto3==1.28.1
+pydantic==1.10.9
+python-amazon-sp-api==0.10.4
