@@ -3,4 +3,4 @@ uvicorn==0.29.0
 python-dotenv
 pydantic==2.7.1
 httpx
-git+https://github.com/ScaleLeap/python-amazon-sp-api.git
+git+https://github.com/saleweaver/python-amazon-sp-api.git
