@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from sp_api.api.listings import Listings
+from sp_api.api import ListingsItems
 from sp_api.base import SellingApiCredentials, Marketplaces
 
 load_dotenv()
@@ -17,5 +17,5 @@ class AmazonSPAPIClient:
         )
 
     def get_my_listings(self):
-        res = Listings(credentials=self.credentials, marketplace=Marketplaces.US).get_listings_items(sellerId=os.getenv("SELLER_ID"))
+        res = ListingsItems(credentials=self.credentials, marketplace=Marketplaces.US).get_listings_items(sellerId=os.getenv("SELLER_ID"))
         return res.payload
