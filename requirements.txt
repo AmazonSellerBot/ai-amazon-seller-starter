@@ -1,10 +1,6 @@
-fastapi
-uvicorn
+fastapi==0.111.0
+uvicorn==0.29.0
 python-dotenv
-requests
+pydantic==2.7.1
 httpx
-boto3
-cryptography
-pydantic
-pytz
-git+https://github.com/saleweaver/python-amazon-sp-api.git
+saleweaver-python-amazon-sp-api @ git+https://github.com/saleweaver/python-amazon-sp-api.git
