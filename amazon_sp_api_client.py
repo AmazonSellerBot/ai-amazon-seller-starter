@@ -1,4 +1,4 @@
-from sp_api.api.listings.listings import Listings
+from sp_api.api import Listings
 from sp_api.base import Marketplaces, SellingApiException
 
 class AmazonSPAPIClient:
