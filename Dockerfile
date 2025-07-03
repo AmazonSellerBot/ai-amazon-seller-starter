@@ -13,5 +13,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-# ✅ This tells Railway how to start your app
+# This tells Railway how to start your app
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
