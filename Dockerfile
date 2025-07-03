@@ -13,5 +13,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-# Use shell form to expand $PORT correctly
-CMD uvicorn app:app --host 0.0.0.0 --port $PORT
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "${PORT}"]
