@@ -9,3 +9,6 @@ logging.info("🚀 App is starting...")
 @app.get("/")
 def root():
     return {"message": "AI Amazon Seller Starter is live!"}
+@app.get("/health")
+def health():
+    return {"status": "ok"}
