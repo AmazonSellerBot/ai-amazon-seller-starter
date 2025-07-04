@@ -17,5 +17,5 @@ COPY . .
 # Expose port 8000 for clarity (optional for Railway)
 EXPOSE 8000
 
-# Start the FastAPI app with Uvicorn, listening on 0.0.0.0:8000
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
+# Use the PORT variable (important for Railway)
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "${PORT}"]
