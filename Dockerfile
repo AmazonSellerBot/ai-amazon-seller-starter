@@ -11,17 +11,12 @@ RUN apt-get update && apt-get install -y git && apt-get clean
 COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the application
+# Copy app files
 COPY . .
 
-# Make sure start.sh is executable
-RUN chmod +x ./start.sh
-
-# Set default port value if not defined
+# Set static port and expose
 ENV PORT=8000
+EXPOSE 8000
 
-# Expose the port for Railway
-EXPOSE $PORT
-
-# ✅ Use the script as the CMD
-CMD ["./start.sh"]
+# Run FastAPI app directly
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
