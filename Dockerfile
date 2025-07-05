@@ -4,7 +4,7 @@ FROM python:3.10-slim
 # Set working directory
 WORKDIR /app
 
-# Install git (in case SP-API package is pulled from GitHub)
+# Install git
 RUN apt-get update && apt-get install -y git && apt-get clean
 
 # Install dependencies
@@ -14,11 +14,14 @@ RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r re
 # Copy the rest of the application
 COPY . .
 
+# Make sure start.sh is executable
+RUN chmod +x ./start.sh
+
 # Set default port value if not defined
 ENV PORT=8000
 
-# Expose the port (important for Railway routing)
+# Expose the port for Railway
 EXPOSE $PORT
 
-# ✅ Correct CMD format
-CMD sh -c 'uvicorn app:app --host 0.0.0.0 --port $PORT'
+# ✅ Use the script as the CMD
+CMD ["./start.sh"]
