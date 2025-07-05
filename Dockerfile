@@ -18,8 +18,7 @@ COPY . .
 ENV PORT=8000
 
 # Expose the port (important for Railway routing)
-EXPOSE ${PORT}
+EXPOSE $PORT
 
-# Launch the app correctly with evaluated port
-CMD ["sh", "-c", "uvicorn app:app --host 0.0.0.0 --port ${PORT}"]
-
+# ✅ Correct CMD format
+CMD sh -c 'uvicorn app:app --host 0.0.0.0 --port $PORT'
