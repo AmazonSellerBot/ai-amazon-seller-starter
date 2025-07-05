@@ -1,21 +1,15 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
-from amazon_sp_api_client import get_product_pricing
-import os
+import logging
 
 app = FastAPI()
 
+logging.basicConfig(level=logging.INFO)
+logging.info("🚀 App is starting...")
+
 @app.get("/")
 def root():
-    return {"message": "Amazon Seller Bot is live!"}
+    return {"message": "AI Amazon Seller Starter is live!"}
 
-class PricingRequest(BaseModel):
-    asin: str
-
-@app.post("/pricing")
-def fetch_pricing(request: PricingRequest):
-    return get_product_pricing(request.asin)
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run("app:app", host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))
+@app.get("/health")
+def health():
+    return {"status": "ok"}
