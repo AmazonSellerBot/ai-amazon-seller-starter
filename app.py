@@ -1,6 +1,5 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-import os
 from amazon_sp_api_client import get_product_pricing
 
 app = FastAPI()
