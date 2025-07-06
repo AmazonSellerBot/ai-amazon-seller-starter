@@ -1,13 +1,15 @@
-import os
 from fastapi import FastAPI
+from pydantic import BaseModel
 
 app = FastAPI()
 
-@app.get("/")
-def read_root():
-    return {"message": "Amazon Seller Bot is running!"}
+class PricingRequest(BaseModel):
+    asin: str
 
-if __name__ == "__main__":
-    import uvicorn
-    port = int(os.environ.get("PORT", 8000))
-    uvicorn.run("main:app", host="0.0.0.0", port=port)
+@app.get("/")
+def root():
+    return {"message": "Amazon Seller Bot is running"}
+
+@app.post("/pricing")
+def pricing(data: PricingRequest):
+    return {"price": f"Fake price for {data.asin}"}  # placeholder
