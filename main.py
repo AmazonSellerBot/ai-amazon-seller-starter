@@ -3,5 +3,5 @@ from fastapi import FastAPI
 app = FastAPI()
 
 @app.get("/")
-def read_root():
-    return {"message": "Hello from AI Amazon Seller Starter!"}
+def root():
+    return {"message": "It works!"}
