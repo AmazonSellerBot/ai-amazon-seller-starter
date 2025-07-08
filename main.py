@@ -4,4 +4,4 @@ app = FastAPI()
 
 @app.get("/")
 def read_root():
-    return {"message": "It works!"}
+    return {"message": "🚀 AI Amazon Seller Starter is live!"}
