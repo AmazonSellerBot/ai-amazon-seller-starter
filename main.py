@@ -4,5 +4,4 @@ app = FastAPI()
 
 @app.get("/")
 def read_root():
-    return {"message": "FastAPI is working on Railway!"}
-
+    return {"message": "It works!"}
